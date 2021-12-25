@@ -12,7 +12,7 @@ class TransactionDetail extends Model
     protected $guarded = ['id'];
 
     public function Product() {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Product::class);
     }
 
     public function Transaction() {

@@ -12,6 +12,6 @@ class Product extends Model
     protected $guarded = ['id'];
 
     public function transactionDetail(){
-        return $this->hasMany(TransactionDetail::class);
+        return $this->belongsTo(TransactionDetail::class);
     }
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -14,10 +17,17 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('transaction', [
+        $data = DB::table('transaction_details')->select('*', DB::raw('transaction_details.quantity * products.price AS subtotal'))
+            ->join('products', 'products.id', '=', 'transaction_details.product_id')
+            ->get();
+        
+        // dd($data);
+        return view('transaction.index', [
             "title" => "transaction",
-            "active" => "transaction"
-        ]);
+            "active" => "transaction",
+
+            'transactionDetails' => TransactionDetail::all()
+        ])->with('data', $data);
     }
 
     /**
@@ -27,7 +37,9 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        
+        return view('transaction.index', [
+            'product' => Product::all()
+        ]);
     }
 
     /**
@@ -38,7 +50,9 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        TransactionDetail::create($request);
+        
+        return redirect('/transaction/index');
     }
 
     /**
@@ -47,9 +61,11 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(TransactionDetail $transactionDetail)
     {
-        //
+        return view('transaction.index', [
+            'transactionDetail' => $transactionDetail
+        ]);
     }
 
     /**
