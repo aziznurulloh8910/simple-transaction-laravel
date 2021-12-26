@@ -18,7 +18,7 @@
           <td scope="row">{{ $loop->iteration }}</td>
           <td>{{ $product->id }}</td>
           <td>{{ $product->name }}</td>
-          <td>{{ $product->price }}</td>
+          <td>{{ rupiah($product->price) }}</td>
         </tr>
         @endforeach
       </tbody>

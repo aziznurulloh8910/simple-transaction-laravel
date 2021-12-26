@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Transaction;
-use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
+use App\Models\Penjualan;
 use Illuminate\Support\Facades\DB;
 
-class TransactionController extends Controller
+class DataController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,16 +15,15 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $data = DB::table('transaction_details')->select('*', DB::raw('transaction_details.quantity * products.price AS subtotal'))
-            ->join('products', 'products.id', '=', 'transaction_details.product_id')
+        $data = DB::table('penjualans')->select('*', DB::raw('penjualans.quantity * products.price AS total'))
+            ->join('products', 'products.id', '=', 'penjualans.product_id')
             ->get();
         
-        // dd($data);
-        return view('transaction.index', [
-            "title" => "transaction",
-            "active" => "transaction",
+        return view('data', [
+            "title" => "data",
+            "active" => "data",
 
-            'transactionDetails' => TransactionDetail::all()
+            'data' => Penjualan::all(),
         ])->with('data', $data);
     }
 
@@ -37,9 +34,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        return view('transaction.index', [
-            'product' => Product::all()
-        ]);
+        //
     }
 
     /**
@@ -50,9 +45,14 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        TransactionDetail::create($request);
-        
-        return redirect('/transaction/index');
+        $store = new Penjualan();
+        $store->product_id = $request->id;
+        $store->quantity = $request->quantity;
+        $store->buyer_name = $request->pembeli;
+        $store->created_at = $request->date;
+        $store->save();
+
+        return redirect('/data');
     }
 
     /**
@@ -61,11 +61,9 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(TransactionDetail $transactionDetail)
+    public function show($id)
     {
-        return view('transaction.index', [
-            'transactionDetail' => $transactionDetail
-        ]);
+        //
     }
 
     /**

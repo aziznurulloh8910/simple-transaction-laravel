@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\BarangController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\DataController;
+use App\Http\Controllers\DataProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,19 +23,8 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('/transaction', function () {
-//     return view('transaction', [
-//         "title" => "transaction",
-//         "active" => "transaction"
-//     ]);
-// });
+Route::get('/product', [DataProductController::class, 'index']);
 
-// Route::get('/barang', function () {
-//     return view('barang', [
-//         "title" => "Data Barang",
-//         "active" => "barang"
-//     ]);
-// });
+Route::get('/penjualan', [TransaksiController::class, 'index']);
 
-Route::resource('/transaction', TransactionController::class);
-Route::resource('/product', ProductController::class);
+Route::resource('/data', DataController::class);

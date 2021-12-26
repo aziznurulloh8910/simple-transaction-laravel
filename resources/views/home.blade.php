@@ -1,10 +1,9 @@
 @extends('layouts.main')
 
 @section('container')
-
-  <div class="row justify-content-center">
-    <div class="col-md-5 mt-5">
-
+  <div class="row my-4 justify-content-center">
+    <div class="col-md-5">
+      <center><img src="/img/account.png" alt="admin" width="150" height="150" class="mb-4"></center>
       <div class="card">
         <div class="card-header">
           Selamat Datang
@@ -18,5 +17,8 @@
 
     </div>
   </div>
-  
+  <div class="row my-5">
+  </div>
+  <div class="row my-5">
+  </div>
 @endsection
